@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
-import { Box, List, ListItem, ListItemText, Typography, useTheme } from "@mui/material";
+import { Box, List, ListItem, ListItemText, Typography, useTheme, Button } from "@mui/material";
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import axios from "axios";
@@ -31,23 +31,20 @@ const Calendar = () => {
     }
   };
 
-  const [events, setEvents] = useState([]);
-
   useEffect(() => {
     axios.get('https://localhost:5001/api/Event/admin', {
         headers: {
             'Authorization': `Bearer ${sessionStorage.getItem('token')}`,
         }
-    }).then(function (response) {
-         console.log(response.data); 
-         setEvents(tmp => [
-            {
-              "id": 0,
-              "titleMeeting": "Important meeting",
-              "meeting": "2023-05-11 21:00:00",
-              "applicationUserId": "1"
-            }
-         ]);
+    }).then(function (response) { 
+          const events = [];
+          response.data.map((event) => {
+            events.push({
+              title: event.title,
+              date: event.date,
+            });
+          })
+          setCurrentEvents(events);
     });
     }, [])
 
@@ -60,6 +57,7 @@ const Calendar = () => {
       selected.event.remove();
     }
   };
+
 
   return (
     <Box m="20px">
@@ -120,19 +118,7 @@ const Calendar = () => {
             dayMaxEvents={true}
             select={handleDateClick}
             eventClick={handleEventClick}
-            eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[
-              {
-                id: "12315",
-                title: "All-day event",
-                date: "2023-05-11 21:00:00",
-              },
-              {
-                id: "5123",
-                title: "Timed event",
-                date: "2022-09-28",
-              },
-            ]}
+            events={currentEvents}
           />
         </Box>
       </Box>
