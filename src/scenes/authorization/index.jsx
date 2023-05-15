@@ -38,7 +38,7 @@ const Authorization = () => {
         <div className="d-flex justify-content-center align-items-center bg-light vh-100">
             <div className='bg-white p-3 rounded w-25'>
                 <form action="">
-                    <h2>Sing-In</h2>
+                    <h2>Sign-In</h2>
                     <div className="mb-3">
                         <label htmlFor="email"><strong>Email</strong></label>
                         <input onChange={emailChange} type="email" placeholder="Enter Email" className='form-control rounded-0'/>
